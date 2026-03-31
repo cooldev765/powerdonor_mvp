@@ -1,0 +1,10 @@
+.env
+*.log
+*.jsonl
+*.json
+!question_bank.json
+!taxonomy.json
+__pycache__/
+*.pyc
+.DS_Store
+crawl_output/

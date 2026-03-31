@@ -1,0 +1,280 @@
+{
+  "welcome": {
+    "tts_intro": "Hi, I'm Dafney. PowerDonor is a nonprofit organization with the goal of helping donors like you find charities that align with your interests. You've already done the hard part by setting up a donor advised fund. Finding charities that are meaningful to you can be an overwhelming process. Our goal is to help you decide where your donations can do the most good--on your terms. It's a pretty simple process, which we want to personalize as much as possible. I'll ask you some questions to understand what matters to you, then we'll search through hundreds of thousands of non-profits that best match your interests and values. Note that PowerDonor has no relationship to any nonprofit organization, and your answers will be kept private. You can skip anything, and you're always in control. This isn't a quiz--there are no right answers. Sound good? Let's get started. Just pop in your name and email so we can save your preferences.",
+    "tts_reprompt": "No rush at all. Whenever you're ready, just type in your name and email and we'll jump right in."
+  },
+
+  "Q1_initial_preferences": {
+    "id": "Q1_initial_preferences",
+    "step": 1,
+    "type": "free_text",
+    "skippable": true,
+    "display_text": "To begin, I would like to learn about your interests and giving preferences. We'll start with broad categories, and then get more detailed as we progress. While you might discover new areas of interest as we progress through this process, are there any preferences you'd like to share with us up front? For example, if you know already that you're interested in early childhood education in rural areas, or mental health support for veterans with PTSD, or arts and culture for K through 12 in Charlotte, NC, you can write this in the text box below. Be as descriptive as you like. We'll be sure to note these preferences and integrate them into the charity choices we present to you.",
+    "tts_prompt": "Hi {firstname}, nice to meet you! Do you have any specific giving preferences to share upfront? For example, early childhood education, veterans' mental health, or arts for K through 12. Feel free to skip if you'd rather dive right in.",
+    "tts_reprompt": "No rush at all. If you have any specific preferences you'd like to share, just type them in the box. Otherwise, feel free to skip and we'll get started.",
+    "placeholder": "Type your preferences here (optional)...",
+    "skip_label": "Skip",
+    "confirmation": "Thanks, we've noted this."
+  },
+
+  "Q2_values": {
+    "id": "Q2_values",
+    "step": 2,
+    "type": "multi_select",
+    "max_selections": 3,
+    "skippable": true,
+    "display_text": "People give to causes they care about for a range of reasons. Which of these feels most like you? Choose up to 3.",
+    "tts_prompt": "People give to causes they care about for a range of reasons. Which of these feels most like you? Give it some thought and choose up to 3, or write something in.",
+    "tts_reprompt": "Take your time. Just pick the ones that feel most true to you, then hit Continue.",
+    "placeholder": "Something else? Tell us...",
+    "skip_label": "Skip",
+    "confirmation": "Great, we'll keep this in mind.",
+    "options": [
+      { "id": "results_driven", "label": "I'm driven by results", "description": "I like knowing my money is making a measurable, tangible difference." },
+      { "id": "values_guided", "label": "I'm guided by my values", "description": "I care most about causes that align deeply with what I believe in." },
+      { "id": "personal_connection", "label": "I'm motivated by personal connection", "description": "I give to things that have touched my life, family, or community." },
+      { "id": "curious_exploratory", "label": "I'm curious and exploratory", "description": "I like learning about new issues and discovering impactful organizations." },
+      { "id": "strategic_impact", "label": "I'm strategic about impact", "description": "I think about leverage, systems change, and long-term outcomes." },
+      { "id": "emotionally_moved", "label": "I'm emotionally moved by stories", "description": "When something resonates on a human level, I feel compelled to act." },
+      { "id": "time_constrained", "label": "I'm thoughtful but time-constrained", "description": "I want to give well, but I don't want the process to feel overwhelming." },
+      { "id": "legacy", "label": "I see philanthropy as part of my legacy", "description": "I think about what I want to stand for over time—and how my giving reflects that." },
+      { "id": "figuring_it_out", "label": "I'm still figuring it out", "description": "I care about giving, but I haven't fully defined my approach yet." },
+      { "id": "other", "label": "Something else", "description": null, "is_freetext": true }
+    ]
+  },
+
+  "Q3_cause_categories": {
+    "id": "Q3_cause_categories",
+    "step": 3,
+    "type": "multi_select",
+    "max_selections": 3,
+    "skippable": false,
+    "display_text": "Which cause areas are you most interested in?",
+    "tts_prompt": "Alright, let's talk about what matters most to you. I've got eleven broad cause areas here. Take a look and pick up to three that really speak to you. There's no wrong answer... just go with what feels right.",
+    "tts_reprompt": "Take your time, there's no rush. Just pick the causes that feel closest to your heart, and then hit Continue whenever you're ready.",
+    "options": [
+      { "id": "cat_arts", "label": "Arts, Culture & Media", "description": "Museums, performing arts, cultural preservation, libraries, creative expression" },
+      { "id": "cat_basic_needs", "label": "Basic Needs, Human Services & Families", "description": "Food security, housing, homelessness, hunger relief, financial stability, child welfare, foster care, adoption, family preservation" },
+      { "id": "cat_economic", "label": "Economic Empowerment & Community Development & Housing", "description": "Neighborhood revitalization, affordable housing, local economic development" },
+      { "id": "cat_education", "label": "Education & Skill Development", "description": "Educational institutions, scholarships, mentoring, after-school programs, teacher education and support, trade schools, supplemental training" },
+      { "id": "cat_environment", "label": "Environment, Climate & Animals", "description": "Conservation, climate change, clean energy, sustainability, wildlife protection, animal welfare, shelters, wildlife conservation, endangered species" },
+      { "id": "cat_equity", "label": "Equity, Justice & Civic Life", "description": "Human rights, racial justice, legal aid, voting rights, social equity" },
+      { "id": "cat_faith", "label": "Faith & Interfaith Initiatives", "description": "Faith-based organizations, religious institutions, spiritual communities" },
+      { "id": "cat_international", "label": "International Aid & Global Development", "description": "Global health, education abroad, disaster relief, economic development" },
+      { "id": "cat_health", "label": "Medical Research, Health & Wellbeing", "description": "Hospitals, disease research, patient support, mental health, public health, disabled persons" },
+      { "id": "cat_policy", "label": "Public Policy, Civic Engagement & Democracy", "description": "Civic participation, policy research, government accountability, democracy support" },
+      { "id": "cat_science", "label": "Science, Technology & Innovation for Good", "description": "Scientific research, technology access, innovation addressing social challenges" }
+    ]
+  },
+
+  "Q4c_subcategories": {
+    "id": "Q4c_subcategories",
+    "step": "4c",
+    "type": "multi_select_dynamic",
+    "skippable": true,
+    "repeats_per_cause": true,
+    "display_text": "Within {category_name}, which specific areas matter most to you?",
+    "tts_prompt": "Great, you chose {category_name}. Would you like to narrow it down a bit? I've got some specific areas listed below. Pick whichever ones resonate with you, or skip if you'd rather see everything.",
+    "tts_reprompt": "No rush at all. Just browse through and check off the ones that interest you, or press skip to see all charities in this category.",
+    "skip_label": "Skip — show me all"
+  },
+
+  "Q4a_geography_scope": {
+    "id": "Q4a_geography_scope",
+    "step": "4a",
+    "type": "multi_select_with_text",
+    "skippable": true,
+    "repeats_per_cause": true,
+    "display_text": "Do you have geographic preferences for this cause? Choose all that apply.",
+    "tts_prompt": "Now, is there a particular part of the world or region where you'd like to focus your giving for this cause? Some people care about local impact, others want to help globally. Just pick whatever fits for you.",
+    "tts_reprompt": "Feel free to select as many geographic areas as you'd like. If you're not sure, you can always skip this one.",
+    "skip_label": "No preference",
+    "options": [
+      { "id": "chapters", "label": "Chapters / Multiple Locations", "triggers_text": false },
+      { "id": "city", "label": "City / Municipality", "triggers_text": true, "text_placeholder": "Which city?" },
+      { "id": "county", "label": "County / District", "triggers_text": true, "text_placeholder": "Which county?" },
+      { "id": "global", "label": "Global / Worldwide", "triggers_text": false },
+      { "id": "multi_country", "label": "Multi-Country (Regional International)", "triggers_text": false },
+      { "id": "multi_county", "label": "Multi-County / District", "triggers_text": false },
+      { "id": "national", "label": "National (Single Country)", "triggers_text": false },
+      { "id": "neighborhood", "label": "Neighborhood / ZIP", "triggers_text": true, "text_placeholder": "Which neighborhood or ZIP?" },
+      { "id": "regional", "label": "Regional (Multi-State / Multi-Province)", "triggers_text": false },
+      { "id": "defined_service_area", "label": "Defined Service Area", "triggers_text": false },
+      { "id": "state", "label": "State / Province", "triggers_text": true, "text_placeholder": "Which state?" },
+      { "id": "virtual", "label": "Virtual / No Geographic Restriction", "triggers_text": false }
+    ]
+  },
+
+  "Q4b_target_population": {
+    "id": "Q4b_target_population",
+    "step": "4b",
+    "type": "multi_select_grouped",
+    "skippable": true,
+    "repeats_per_cause": true,
+    "display_text": "Who do you most want to help in this cause area? Choose all that apply.",
+    "tts_prompt": "This is a really important one. Who are the people or communities you most want your giving to reach? There's a long list here, so scroll through and pick the groups that are closest to your heart.",
+    "tts_reprompt": "Take your time with this one. There are quite a few options, so just scroll through and check the ones that matter most to you.",
+    "skip_label": "Skip",
+    "category_rules": {
+      "cat_environment": {
+        "exclude_groups": ["age", "family_structures", "occupations", "socioeconomic", "vulnerable_populations", "health_conditions", "identity_gender", "race_ethnicity"],
+        "include_groups": ["community_type"]
+      },
+      "cat_equity": {
+        "age_simplified": true,
+        "age_options": ["Adults (25-64)", "Children (4-12)"]
+      },
+      "cat_faith": {
+        "exclude_groups": ["occupations", "health_conditions", "vulnerable_populations"]
+      },
+      "health_conditions_only_for": ["cat_arts", "cat_basic_needs", "cat_economic", "cat_health", "cat_policy", "cat_science"]
+    },
+    "groups": [
+      {
+        "id": "age",
+        "label": "Age",
+        "options": ["Adults (25-64)", "Children (4-12)", "Infants & Toddlers (0-3)", "Seniors (65+)", "Adolescents & Teens (13-17)", "Young Adults (18-24)"]
+      },
+      {
+        "id": "family_structures",
+        "label": "Family Structures",
+        "options": ["Single Mothers", "Single Fathers", "Foster families", "Families supporting elder care"]
+      },
+      {
+        "id": "occupations",
+        "label": "Occupations / Roles",
+        "options": ["Caregivers", "Educators", "First Responders", "Students", "Medical professionals", "Military Families", "Veterans"]
+      },
+      {
+        "id": "socioeconomic",
+        "label": "Socioeconomic",
+        "options": ["Homeless / Housing Insecure", "Immigrants / Newcomers", "Low-Income / Working Poor", "People Below Poverty Line", "Refugees / Asylum Seekers", "Undocumented / DACA"]
+      },
+      {
+        "id": "vulnerable_populations",
+        "label": "Vulnerable Populations",
+        "options": ["At-Risk Youth", "Domestic Violence Survivors", "Currently Incarcerated", "Formerly Incarcerated", "Sexual Assault/Domestic Abuse Survivors", "Human Trafficking Survivors"]
+      },
+      {
+        "id": "health_conditions",
+        "label": "Health Conditions",
+        "options": ["Chronic Illness", "Intellectual/Developmental Disabilities (IDD)", "Mental Health Conditions", "Neurodivergent Individuals", "Physical Disabilities", "Substance Use Disorders/Addiction"]
+      },
+      {
+        "id": "identity_gender",
+        "label": "Identity / Gender",
+        "options": ["Men & Boys", "Women & Girls", "LGBTQ+ Individuals", "Transgender and Non-Binary Individuals"]
+      },
+      {
+        "id": "race_ethnicity",
+        "label": "Race / Ethnicity",
+        "options": ["Asian American / Pacific Islander", "Black / African American", "Hispanic / Latino", "Middle Eastern / North African (MENA)", "Multiracial Communities", "Native American / Indigenous"]
+      },
+      {
+        "id": "community_type",
+        "label": "Community Type",
+        "options": ["Rural", "Tribal", "Urban"]
+      }
+    ]
+  },
+
+  "Q5_engagement_level": {
+    "id": "Q5_engagement_level",
+    "step": 5,
+    "type": "multi_select",
+    "skippable": true,
+    "display_text": "How involved would you like to be beyond donating? Choose all that apply.",
+    "tts_prompt": "OK, we're making great progress! Now I'm curious... beyond writing a check, how involved would you like to be? Some people prefer to give and step back, others love rolling up their sleeves. Whatever your style, it's all good.",
+    "tts_reprompt": "Just pick the engagement styles that feel right for you. There's really no wrong answer here.",
+    "skip_label": "Skip",
+    "options": [
+      { "id": "give_only", "label": "Give only (hands-off)" },
+      { "id": "receive_updates", "label": "Receive updates (light touch)" },
+      { "id": "attend_events", "label": "Attend occasional events/webinars" },
+      { "id": "volunteer", "label": "Volunteer occasionally" },
+      { "id": "expertise", "label": "Use my expertise (mentorship/advising)" },
+      { "id": "deep_involvement", "label": "Deep involvement (committee/board-level)" }
+    ]
+  },
+
+  "Q6_mandatory_engagement": {
+    "id": "Q6_mandatory_engagement",
+    "step": 6,
+    "type": "single_select",
+    "skippable": false,
+    "display_text": "Do you have any must-have engagement requirements?",
+    "tts_prompt": "Is there anything that's a deal-breaker for you? For example, would you only consider charities that offer volunteer opportunities, or ones that send regular updates? Or are you flexible?",
+    "tts_reprompt": "Just pick the one that best describes your must-have, or choose no mandatory requirement if you're open to anything.",
+    "options": [
+      { "id": "none", "label": "No mandatory requirement" },
+      { "id": "volunteer_only", "label": "Only charities with volunteer opportunities" },
+      { "id": "events_only", "label": "Only charities with events/webinars" },
+      { "id": "measurable_updates", "label": "Only charities with regular measurable updates" },
+      { "id": "expertise_only", "label": "Only charities that can use my professional expertise" }
+    ]
+  },
+
+  "Q7_budget_12mo": {
+    "id": "Q7_budget_12mo",
+    "step": 7,
+    "type": "single_select_with_numeric",
+    "skippable": true,
+    "display_text": "Do you have a maximum giving budget in mind for the next 12 months?",
+    "tts_prompt": "Almost there! This one is totally optional, but it helps me tailor the results. Do you have a rough giving budget in mind for the next twelve months? You can pick a range or skip if you'd rather not say. Completely up to you.",
+    "tts_reprompt": "No pressure on this one. Pick a range that feels right, or choose prefer not to say. It's totally fine either way.",
+    "skip_label": "Skip",
+    "options": [
+      { "id": "no_say", "label": "Prefer not to say" },
+      { "id": "under_1k", "label": "Under $1,000" },
+      { "id": "1k_5k", "label": "$1,000–$5,000" },
+      { "id": "5k_25k", "label": "$5,000–$25,000" },
+      { "id": "25k_100k", "label": "$25,000–$100,000" },
+      { "id": "100k_plus", "label": "$100,000+" },
+      { "id": "exact", "label": "Enter an exact amount", "triggers_numeric": true }
+    ]
+  },
+
+  "Q8_pps": {
+    "id": "Q8_pps",
+    "step": 8,
+    "type": "pps_generation",
+    "skippable": true,
+    "tts_prompt": "One option I can offer at this point is I can prepare a personalized philanthropy policy statement. Like an investment policy statement, this is a one paragraph summary of everything you've shared with me, explaining your interests and values regarding your philanthropic efforts. This might serve as a useful reference document for you and for anyone else you might like to involve in your giving process, such as your family members. It will be a document that you can keep and edit over time as your interests evolve. This is totally optional. Feel free to skip if you'd prefer.",
+    "button_produce": "Produce my PPS",
+    "button_skip": "Skip",
+    "tts_after_produce": "Here is a summary of your philanthropic values and interests as we understand them. Please edit as you see fit to correct anything we got wrong or capture anything we might have missed. Take all the time you need, and remember to hit save when finished.",
+    "note": "Always generate PPS in background even if donor skips — store as pps_generated in profile."
+  },
+
+  "Q9_results_per_category": {
+    "id": "Q9_results_per_category",
+    "step": 9,
+    "type": "single_select",
+    "skippable": false,
+    "display_text": "How many matching charities would you like to see per category?",
+    "tts_prompt": "Last couple of questions! When I find matches for you, how many charities would you like to see in each category? A handful, or would you prefer a longer list to browse?",
+    "tts_reprompt": "Just pick how many results you'd like to see per category, and we're almost done!",
+    "default": 10,
+    "options": [
+      { "id": "5", "label": "5 per category", "value": 5 },
+      { "id": "10", "label": "10 per category", "value": 10 },
+      { "id": "20", "label": "20 per category", "value": 20 },
+      { "id": "50", "label": "50 per category", "value": 50 },
+      { "id": "auto", "label": "Let PowerDonor decide", "value": 10 }
+    ]
+  },
+
+  "Q10_next_steps": {
+    "id": "Q10_next_steps",
+    "step": 10,
+    "type": "single_select",
+    "skippable": false,
+    "display_text": "Would you like to search for matches now or finish for now?",
+    "tts_prompt": "You did it! That was wonderful, thank you so much for sharing all of that with me. So, would you like me to go ahead and find your charity matches right now? Or would you prefer to come back later?",
+    "tts_reprompt": "Just let me know... search for matches now, or save your profile and come back later?",
+    "options": [
+      { "id": "search_now", "label": "Search for matches now" },
+      { "id": "finish_later", "label": "Finish for now" }
+    ]
+  }
+}

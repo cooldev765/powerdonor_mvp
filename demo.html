@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PowerDonor.AI — Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 48px;
+      max-width: 640px;
+      width: 100%;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .logo { font-size: 13px; font-weight: 600; color: #888; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .tts-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tts-indicator {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #2d6a4f;
+    }
+
+    .tts-indicator.playing { display: flex; }
+
+    .tts-wave {
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+      height: 14px;
+    }
+
+    .tts-wave span {
+      display: block;
+      width: 3px;
+      background: #2d6a4f;
+      border-radius: 2px;
+      animation: wave 0.8s ease-in-out infinite;
+    }
+
+    .tts-wave span:nth-child(2) { animation-delay: 0.15s; }
+    .tts-wave span:nth-child(3) { animation-delay: 0.3s; }
+    .tts-wave span:nth-child(4) { animation-delay: 0.45s; }
+
+    @keyframes wave {
+      0%, 100% { height: 4px; }
+      50% { height: 14px; }
+    }
+
+    .btn-mute {
+      background: none;
+      border: 1.5px solid #e8e8e8;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      line-height: 1;
+    }
+    .btn-mute:hover { border-color: #aaa; }
+    .btn-mute.muted { opacity: 0.4; }
+
+    .step-label { font-size: 12px; color: #aaa; margin-bottom: 8px; }
+    h1 { font-size: 26px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+    h2 { font-size: 20px; font-weight: 600; line-height: 1.4; margin-bottom: 24px; }
+    p  { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 24px; }
+
+    .input-group { margin-bottom: 16px; }
+    .input-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #444; }
+    input[type="text"], input[type="email"], input[type="number"], textarea {
+      width: 100%; padding: 12px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px;
+      font-size: 15px; outline: none; transition: border-color 0.15s; font-family: inherit;
+    }
+    input:focus, textarea:focus { border-color: #2d6a4f; }
+    textarea { resize: vertical; min-height: 100px; }
+
+    .options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .option {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px; border: 1.5px solid #e8e8e8; border-radius: 10px;
+      cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    }
+    .option:hover { border-color: #2d6a4f; background: #f8fffe; }
+    .option.selected { border-color: #2d6a4f; background: #f0faf5; }
+    .option input[type="checkbox"], .option input[type="radio"] { margin-top: 2px; accent-color: #2d6a4f; flex-shrink: 0; }
+    .option-label { font-size: 15px; font-weight: 500; }
+    .option-desc { font-size: 13px; color: #777; margin-top: 2px; }
+    .option-text-input { margin-top: 10px; width: 100%; }
+
+    .group-label { font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin: 20px 0 8px; }
+
+    .btn { display: inline-block; padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: opacity 0.15s; }
+    .btn-primary { background: #2d6a4f; color: #fff; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-secondary { background: #f0f0ee; color: #444; }
+    .btn-secondary:hover { background: #e4e4e2; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .actions { margin-top: 28px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .skip-link { font-size: 13px; color: #aaa; cursor: pointer; text-decoration: underline; margin-left: auto; }
+    .skip-link:hover { color: #666; }
+
+    textarea.pps-edit { border-color: #b7e4c7; background: #f8fffe; min-height: 180px; }
+
+    .complete-icon { font-size: 48px; margin-bottom: 16px; }
+    .tag { display: inline-block; background: #e8f5ee; color: #2d6a4f; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; margin: 3px; }
+
+    .error { color: #c0392b; font-size: 13px; margin-top: 8px; }
+    .info  { color: #888; font-size: 14px; margin-bottom: 12px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .max-note { font-size: 12px; color: #aaa; margin-bottom: 12px; }
+
+    .category-badge {
+      display: inline-block;
+      background: #e8f5ee;
+      color: #2d6a4f;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
+    .category-progress {
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+
+    .resume-banner {
+      background: #f0faf5;
+      border: 1.5px solid #b7e4c7;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 14px;
+      color: #2d6a4f;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .resume-banner button {
+      background: #2d6a4f;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+
+  <!-- ── Header (always visible) ── -->
+  <div class="card-header">
+    <div class="logo">PowerDonor.AI</div>
+    <div class="tts-bar">
+      <div class="tts-indicator" id="tts-indicator">
+        <div class="tts-wave">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        Dafney speaking
+      </div>
+      <button class="btn-mute" id="btn-mute" onclick="toggleMute()" title="Mute / unmute Dafney">🔊</button>
+    </div>
+  </div>
+
+  <!-- ── Welcome ── -->
+  <div id="screen-welcome" class="screen active">
+    <div id="resume-banner" style="display:none" class="resume-banner">
+      <span id="resume-msg"></span>
+      <button onclick="resumeSession()">Resume →</button>
+    </div>
+    <h1>Find charities that match your values.</h1>
+    <p>Answer a few questions and Dafney will match you with nonprofits that align with what you care about most.</p>
+    <div class="input-group">
+      <label for="inp-firstname">First name</label>
+      <input type="text" id="inp-firstname" placeholder="Your name" />
+    </div>
+    <div class="input-group">
+      <label for="inp-email">Email</label>
+      <input type="email" id="inp-email" placeholder="you@example.com" />
+    </div>
+    <div id="welcome-error" class="error"></div>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="startInterview()">Get started →</button>
+    </div>
+  </div>
+
+  <!-- ── Question ── -->
+  <div id="screen-question" class="screen">
+    <div class="step-label" id="q-step"></div>
+    <div id="q-category-badge" style="display:none"></div>
+    <div id="q-category-progress" style="display:none" class="category-progress"></div>
+    <h2 id="q-text"></h2>
+    <div class="max-note" id="q-max-note"></div>
+    <div id="q-body"></div>
+    <div id="q-error" class="error"></div>
+    <div class="actions">
+      <button class="btn btn-primary" id="btn-next" onclick="submitAnswer()">Continue</button>
+      <button class="btn btn-secondary" id="btn-skip" onclick="skipQuestion()" style="display:none">Skip</button>
+    </div>
+  </div>
+
+  <!-- ── PPS ── -->
+  <div id="screen-pps" class="screen">
+    <div class="step-label">Step 8 of 10</div>
+    <h2>Your Philanthropy Statement</h2>
+    <p>Here's a summary of your philanthropic values and intentions. Edit anything that doesn't feel right, then save.</p>
+    <div id="pps-loading" class="info">Dafney is writing your statement...</div>
+    <textarea class="pps-edit" id="pps-textarea" style="display:none" oninput="cancelReprompt()"></textarea>
+    <div id="pps-error" class="error"></div>
+    <div class="actions">
+      <button class="btn btn-primary" id="btn-save-pps" onclick="savePPS()" style="display:none">Save &amp; continue</button>
+      <button class="btn btn-secondary" id="btn-skip-pps" onclick="skipPPS()" style="display:none">Skip</button>
+    </div>
+  </div>
+
+  <!-- ── Complete ── -->
+  <div id="screen-complete" class="screen">
+    <div class="complete-icon">✅</div>
+    <h2>You're all set, <span id="complete-name"></span>!</h2>
+    <p>Your profile has been saved. We'll find your charity matches once our full database is ready.</p>
+    <div id="complete-summary"></div>
+  </div>
+
+</div>
+
+<script>
+  const API = "http://127.0.0.1:8000";
+
+  // ── Col key → display name (reverse of CATEGORY_TO_COL) ─────────────────
+  const COL_TO_CATEGORY = {
+    "cat_arts":        "Arts, Culture & Media",
+    "cat_basic_needs": "Basic Needs, Human Services & Families",
+    "cat_economic":    "Economic Empowerment & Community Development & Housing",
+    "cat_education":   "Education & Skill Development",
+    "cat_environment": "Environment, Climate & Animals",
+    "cat_equity":      "Equity, Justice & Civic Life",
+    "cat_faith":       "Faith & Interfaith Initiatives",
+    "cat_international":"International Aid & Global Development",
+    "cat_health":      "Medical Research, Health & Wellbeing",
+    "cat_policy":      "Public Policy, Civic Engagement & Democracy",
+    "cat_science":     "Science, Technology & Innovation for Good",
+  };
+
+  // ── Category → category_rules key mapping ────────────────────────────────
+  const CATEGORY_TO_COL = {
+    "Arts, Culture & Media":                                  "cat_arts",
+    "Basic Needs, Human Services & Families":                 "cat_basic_needs",
+    "Economic Empowerment & Community Development & Housing": "cat_economic",
+    "Education & Skill Development":                          "cat_education",
+    "Environment, Climate & Animals":                         "cat_environment",
+    "Equity, Justice & Civic Life":                           "cat_equity",
+    "Faith & Interfaith Initiatives":                         "cat_faith",
+    "International Aid & Global Development":                 "cat_international",
+    "Medical Research, Health & Wellbeing":                   "cat_health",
+    "Public Policy, Civic Engagement & Democracy":            "cat_policy",
+    "Science, Technology & Innovation for Good":              "cat_science",
+  };
+
+  // ── State ─────────────────────────────────────────────────────────────────
+  let sessionId         = null;
+  let currentQuestion   = null;
+  let firstname         = "";
+  let muted             = false;
+  let currentAudio      = null;
+  let repromptTimer     = null;
+  let ttsAbortController = null;
+  let selectedCategories = [];   // set at Q3 — used for category loop progress
+  let categoryIndex      = 0;    // tracks which iteration of Q4 loop we're on
+
+  // ── localStorage helpers ─────────────────────────────────────────────────
+
+  function saveSession() {
+    if (sessionId) localStorage.setItem("pd_session_id", sessionId);
+    if (firstname) localStorage.setItem("pd_firstname", firstname);
+  }
+
+  function clearSession() {
+    localStorage.removeItem("pd_session_id");
+    localStorage.removeItem("pd_firstname");
+  }
+
+  // Check for saved session on page load
+  window.addEventListener("DOMContentLoaded", () => {
+    const saved = localStorage.getItem("pd_session_id");
+    const savedName = localStorage.getItem("pd_firstname");
+    if (saved && savedName) {
+      const banner = document.getElementById("resume-banner");
+      document.getElementById("resume-msg").textContent =
+        `Welcome back, ${savedName}! You have an interview in progress.`;
+      banner.style.display = "flex";
+    }
+  });
+
+  // ── TTS ───────────────────────────────────────────────────────────────────
+
+  // Play a silent buffer to unlock autoplay — must be called inside a user gesture
+  function _unlockAudio() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const buf = ctx.createBuffer(1, 1, 22050);
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.start(0);
+      ctx.resume();
+    } catch (_) {}
+  }
+
+  async function playTTS(text) {
+    if (muted || !text || !text.trim()) return;
+    stopAudio();
+    cancelReprompt();
+
+    ttsAbortController = new AbortController();
+    try {
+      const res = await fetch(API + "/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text.trim() }),
+        signal: ttsAbortController.signal,
+      });
+      if (!res.ok) return;
+
+      const blob = await res.blob();
+      const url  = URL.createObjectURL(blob);
+      currentAudio = new Audio(url);
+
+      setTTSIndicator(true);
+
+      currentAudio.addEventListener("ended", () => {
+        setTTSIndicator(false);
+        URL.revokeObjectURL(url);
+        currentAudio = null;
+        scheduleReprompt();
+      });
+
+      currentAudio.addEventListener("error", () => {
+        setTTSIndicator(false);
+        currentAudio = null;
+      });
+
+      await currentAudio.play();
+    } catch (_) {
+      setTTSIndicator(false);
+    }
+  }
+
+  function stopAudio() {
+    if (ttsAbortController) { ttsAbortController.abort(); ttsAbortController = null; }
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    setTTSIndicator(false);
+  }
+
+  function setTTSIndicator(playing) {
+    document.getElementById("tts-indicator").classList.toggle("playing", playing);
+  }
+
+  function toggleMute() {
+    muted = !muted;
+    const btn = document.getElementById("btn-mute");
+    btn.textContent = muted ? "🔇" : "🔊";
+    btn.classList.toggle("muted", muted);
+    if (muted) { stopAudio(); cancelReprompt(); }
+  }
+
+  function scheduleReprompt() {
+    if (!currentQuestion?.tts_reprompt) return;
+    repromptTimer = setTimeout(() => playTTS(currentQuestion.tts_reprompt), 15000);
+  }
+
+  function cancelReprompt() {
+    if (repromptTimer) { clearTimeout(repromptTimer); repromptTimer = null; }
+  }
+
+  // Cancel reprompt on any user interaction
+  document.addEventListener("click",   cancelReprompt);
+  document.addEventListener("keydown", cancelReprompt);
+
+  // ── Screens ───────────────────────────────────────────────────────────────
+
+  function show(id) {
+    stopAudio();
+    cancelReprompt();
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+  }
+
+  // ── Start ─────────────────────────────────────────────────────────────────
+
+  async function resumeSession() {
+    const saved = localStorage.getItem("pd_session_id");
+    const savedName = localStorage.getItem("pd_firstname");
+    if (!saved) return;
+    const res = await callAPI("GET", `/api/interview/session/${saved}`);
+    if (res.error) {
+      // Session not found on backend — clear and let them start fresh
+      clearSession();
+      document.getElementById("resume-banner").style.display = "none";
+      document.getElementById("welcome-error").textContent = "Previous session expired. Please start a new one.";
+      return;
+    }
+    if (res.is_complete) {
+      clearSession();
+      sessionId = saved;
+      firstname = savedName || res.firstname || "";
+      showComplete();
+      return;
+    }
+    sessionId = saved;
+    firstname = savedName || res.firstname || "";
+    // Restore category tracking from state
+    const state = res.profile?._state || {};
+    selectedCategories = [
+      ...(state.categories_pending || []),
+      ...(state.categories_done || []),
+    ];
+    categoryIndex = (state.categories_done || []).length;
+    // Re-hydrate the current question from backend
+    const qId = state.current_question || "Q1_initial_preferences";
+    const cat  = state.current_category || null;
+    let qUrl = `/api/interview/question/${qId}`;
+    if (cat) qUrl += `?category=${encodeURIComponent(cat)}`;
+    const q = await callAPI("GET", qUrl);
+    if (q.error) { document.getElementById("welcome-error").textContent = q.error; return; }
+    renderQuestion(q);
+    show("screen-question");
+    playTTS(q.tts_prompt);
+  }
+
+  async function startInterview() {
+    const fn  = document.getElementById("inp-firstname").value.trim();
+    const em  = document.getElementById("inp-email").value.trim();
+    const err = document.getElementById("welcome-error");
+    err.textContent = "";
+
+    if (!fn || !em) { err.textContent = "Please enter your name and email."; return; }
+
+    // Unlock browser autoplay — must happen synchronously inside a user gesture
+    _unlockAudio();
+
+    const res = await callAPI("POST", "/api/interview/start", { firstname: fn, email: em });
+    if (res.error) { err.textContent = res.error; return; }
+
+    sessionId = res.session_id;
+    firstname = fn;
+    selectedCategories = [];
+    categoryIndex = 0;
+    saveSession();
+    renderQuestion(res.next_question);
+    show("screen-question");
+    playTTS(res.next_question.tts_prompt);
+  }
+
+  // ── Answering ─────────────────────────────────────────────────────────────
+
+  async function submitAnswer() {
+    cancelReprompt();
+    const answer = collectAnswer();
+    if (answer === null) {
+      document.getElementById("q-error").textContent = "Please make a selection to continue.";
+      return;
+    }
+    document.getElementById("q-error").textContent = "";
+    await postAnswer(currentQuestion.id, answer);
+  }
+
+  async function skipQuestion() {
+    cancelReprompt();
+    await postAnswer(currentQuestion.id, "");
+  }
+
+  async function postAnswer(questionId, answer) {
+    const btn = document.getElementById("btn-next");
+    btn.disabled = true;
+    btn.textContent = "Saving...";
+    stopAudio();
+
+    // Track category selections when Q3 is answered
+    if (questionId === "Q3_cause_categories" && Array.isArray(answer)) {
+      selectedCategories = [...answer];
+      categoryIndex = 0;
+    }
+
+    const res = await callAPI("POST", "/api/interview/answer", {
+      session_id: sessionId,
+      question_id: questionId,
+      answer,
+    });
+
+    btn.disabled = false;
+    btn.textContent = "Continue";
+
+    if (res.error) { document.getElementById("q-error").textContent = res.error; return; }
+    if (res.complete) { clearSession(); showComplete(); return; }
+
+    const next = res.next_question;
+
+    // Advance category index when a new Q4 loop starts for a different category
+    if (questionId === "Q4c_subcategories" && next.id === "Q4a_geography_scope") {
+      categoryIndex++;
+    }
+
+    if (next.type === "pps_generation") {
+      currentQuestion = next;               // keep Q8 as current — will submit on save/skip
+      show("screen-pps");
+      playTTS(next.tts_prompt);
+      generatePPS(next.tts_after_produce);
+    } else {
+      renderQuestion(next);
+      playTTS(next.tts_prompt);
+    }
+  }
+
+  // ── Render question ───────────────────────────────────────────────────────
+
+  function renderQuestion(q) {
+    currentQuestion = q;
+    document.getElementById("q-step").textContent = `Step ${q.step} of 10`;
+    document.getElementById("q-text").textContent = q.display_text || q.tts_prompt;
+    document.getElementById("q-error").textContent = "";
+    document.getElementById("q-max-note").textContent =
+      q.max_selections ? `Choose up to ${q.max_selections}` : "";
+
+    // Category badge (Q4a / Q4b / Q4c)
+    const badge    = document.getElementById("q-category-badge");
+    const progress = document.getElementById("q-category-progress");
+    if (q.category) {
+      badge.textContent  = COL_TO_CATEGORY[q.category] || q.category;
+      badge.className    = "category-badge";
+      badge.style.display = "inline-block";
+      if (selectedCategories.length > 1) {
+        progress.textContent  = `Category ${categoryIndex + 1} of ${selectedCategories.length}`;
+        progress.style.display = "block";
+      } else {
+        progress.style.display = "none";
+      }
+    } else {
+      badge.style.display    = "none";
+      progress.style.display = "none";
+    }
+
+    const skip = document.getElementById("btn-skip");
+    skip.style.display = q.skippable ? "inline-block" : "none";
+    skip.textContent   = q.skip_label || "Skip";
+
+    const body = document.getElementById("q-body");
+    body.innerHTML = "";
+
+    switch (q.type) {
+      case "free_text":                  renderFreeText(body, q);          break;
+      case "multi_select":
+      case "multi_select_dynamic":       renderMultiSelect(body, q);       break;
+      case "single_select":              renderSingleSelect(body, q);      break;
+      case "multi_select_grouped":       renderGrouped(body, q);           break;
+      case "multi_select_with_text":     renderMultiWithText(body, q);     break;
+      case "single_select_with_numeric": renderSingleWithNumeric(body, q); break;
+      default: body.innerHTML = `<p class="info">Question type: ${q.type}</p>`;
+    }
+  }
+
+  function renderFreeText(body, q) {
+    const ta = document.createElement("textarea");
+    ta.id          = "ans-text";
+    ta.placeholder = q.placeholder || "Type your answer here...";
+    ta.addEventListener("input", cancelReprompt);
+    body.appendChild(ta);
+  }
+
+  function renderMultiSelect(body, q) {
+    const list = document.createElement("div");
+    list.className = "options-list";
+    (q.options || []).forEach(opt => {
+      if (opt.is_freetext) return;
+      const div = makeOption("checkbox", opt.id, opt.label, opt.description, () => {
+        enforceMax(list, q.max_selections);
+        div.classList.toggle("selected", div.querySelector("input").checked);
+      });
+      list.appendChild(div);
+    });
+    body.appendChild(list);
+  }
+
+  function renderSingleSelect(body, q) {
+    const list = document.createElement("div");
+    list.className = "options-list";
+    (q.options || []).forEach(opt => {
+      const div = makeOption("radio", "single-ans", opt.label, opt.description, () => {
+        list.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+        div.classList.add("selected");
+      });
+      div.querySelector("input").value = opt.id;
+      list.appendChild(div);
+    });
+    body.appendChild(list);
+  }
+
+  function renderGrouped(body, q) {
+    // Determine excluded groups from category_rules (e.g. Faith hides occupations)
+    const catCol   = q.category ? CATEGORY_TO_COL[q.category] : null;
+    const rules    = catCol && q.category_rules ? q.category_rules[catCol] : null;
+    const excluded = new Set(rules?.exclude_groups || []);
+
+    (q.groups || []).forEach(group => {
+      if (excluded.has(group.id)) return;   // skip excluded group
+      const lbl = document.createElement("div");
+      lbl.className   = "group-label";
+      lbl.textContent = group.label;
+      body.appendChild(lbl);
+
+      const list = document.createElement("div");
+      list.className = "options-list";
+      (group.options || []).forEach(opt => {
+        const div = makeOption("checkbox", opt, opt, null, () => {
+          div.classList.toggle("selected", div.querySelector("input").checked);
+        });
+        list.appendChild(div);
+      });
+      body.appendChild(list);
+    });
+  }
+
+  function renderMultiWithText(body, q) {
+    const list = document.createElement("div");
+    list.className = "options-list";
+    (q.options || []).forEach(opt => {
+      // Use label as value so backend receives "State / Province" not "state"
+      const div = makeOption("checkbox", opt.label, opt.label, null, () => {
+        div.classList.toggle("selected", div.querySelector("input").checked);
+        if (opt.triggers_text) {
+          const ti = div.querySelector(".option-text-input");
+          if (ti) ti.style.display = div.querySelector("input").checked ? "block" : "none";
+        }
+      });
+      if (opt.triggers_text) {
+        const ti = document.createElement("input");
+        ti.type      = "text";
+        ti.className = "option-text-input";
+        ti.placeholder = opt.text_placeholder || "";
+        ti.style.display = "none";
+        ti.addEventListener("input", cancelReprompt);
+        div.appendChild(ti);
+      }
+      list.appendChild(div);
+    });
+    body.appendChild(list);
+  }
+
+  function renderSingleWithNumeric(body, q) {
+    const list = document.createElement("div");
+    list.className = "options-list";
+    (q.options || []).forEach(opt => {
+      const div = makeOption("radio", "single-ans", opt.label, null, () => {
+        list.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+        div.classList.add("selected");
+        const ni = body.querySelector(".numeric-input");
+        if (ni) ni.style.display = opt.triggers_numeric ? "block" : "none";
+      });
+      div.querySelector("input").value = opt.id;
+      list.appendChild(div);
+    });
+    body.appendChild(list);
+
+    const ni = document.createElement("input");
+    ni.type        = "number";
+    ni.className   = "numeric-input";
+    ni.placeholder = "Enter exact amount ($)";
+    ni.style.cssText = "display:none; margin-top:12px;";
+    ni.addEventListener("input", cancelReprompt);
+    body.appendChild(ni);
+  }
+
+  // ── Collect answer ────────────────────────────────────────────────────────
+
+  function collectAnswer() {
+    const q = currentQuestion;
+
+    if (q.type === "free_text") {
+      return document.getElementById("ans-text").value.trim() || "";
+    }
+
+    if (q.type === "single_select" || q.type === "single_select_with_numeric") {
+      const checked = document.querySelector('input[name="single-ans"]:checked');
+      if (!checked) return null;
+      if (q.type === "single_select_with_numeric" && checked.value === "exact") {
+        const ni = document.querySelector(".numeric-input");
+        return ni?.value || "exact";
+      }
+      return checked.value;
+    }
+
+    if (q.type === "multi_select" || q.type === "multi_select_dynamic") {
+      const vals = [...document.querySelectorAll('.option input[type="checkbox"]:checked')]
+        .map(i => i.value);
+      return vals.length ? vals : (q.skippable ? [] : null);
+    }
+
+    if (q.type === "multi_select_grouped") {
+      const vals = [...document.querySelectorAll('.option input[type="checkbox"]:checked')]
+        .map(i => i.value);
+      return vals.length ? vals : [];
+    }
+
+    if (q.type === "multi_select_with_text") {
+      // Backend expects a single geography scope string (label)
+      const checked = document.querySelectorAll('.option input[type="checkbox"]:checked');
+      if (!checked.length) return "";
+      // Return first selected label; include text detail if provided
+      const cb = checked[0];
+      const ti = cb.closest(".option")?.querySelector(".option-text-input");
+      return ti?.value.trim() ? `${cb.value}: ${ti.value.trim()}` : cb.value;
+    }
+
+    return "";
+  }
+
+  // ── PPS ───────────────────────────────────────────────────────────────────
+
+  async function generatePPS(ttsAfter) {
+    const res = await callAPI("POST", "/api/pps/generate", { session_id: sessionId });
+
+    document.getElementById("pps-loading").style.display = "none";
+
+    if (res.error) {
+      document.getElementById("pps-error").textContent = res.error;
+    } else {
+      const ta = document.getElementById("pps-textarea");
+      ta.value         = res.pps_text;
+      ta.style.display = "block";
+      // Play tts_after_produce after generation
+      if (ttsAfter) await playTTS(ttsAfter);
+    }
+
+    document.getElementById("btn-save-pps").style.display = "inline-block";
+    document.getElementById("btn-skip-pps").style.display = "inline-block";
+  }
+
+  async function savePPS() {
+    const text = document.getElementById("pps-textarea").value.trim();
+    if (text) await callAPI("POST", "/api/pps/save", { session_id: sessionId, pps_text: text });
+    await advanceFromPPS("produce");
+  }
+
+  async function skipPPS() {
+    await advanceFromPPS("skip");
+  }
+
+  async function advanceFromPPS(choice) {
+    stopAudio();
+    const res = await callAPI("POST", "/api/interview/answer", {
+      session_id:  sessionId,
+      question_id: "Q8_pps",
+      answer:      choice,
+    });
+    if (res.error) { document.getElementById("pps-error").textContent = res.error; return; }
+    if (res.complete) { showComplete(); return; }
+    renderQuestion(res.next_question);
+    show("screen-question");
+    playTTS(res.next_question.tts_prompt);
+  }
+
+  // ── Complete ──────────────────────────────────────────────────────────────
+
+  async function showComplete() {
+    clearSession();
+    document.getElementById("complete-name").textContent = firstname;
+    show("screen-complete");
+
+    playTTS(`Thank you so much, ${firstname}. Your profile has been saved. We'll be in touch when your charity matches are ready.`);
+
+    const res = await callAPI("GET", `/api/interview/session/${sessionId}`);
+    if (!res.error) {
+      const cats    = res.profile?.interview?.Q3_cause_categories || [];
+      const summary = document.getElementById("complete-summary");
+      if (cats.length) {
+        summary.innerHTML =
+          "<p style='margin:16px 0 10px;color:#555;font-size:14px;'>Your selected causes:</p>" +
+          cats.map(c => `<span class="tag">${c}</span>`).join("");
+      }
+    }
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+
+  function makeOption(type, value, label, desc, onChange) {
+    const div = document.createElement("div");
+    div.className = "option";
+
+    const inp  = document.createElement("input");
+    inp.type   = type;
+    if (type === "checkbox") { inp.value = value; }
+    else { inp.name = "single-ans"; }
+    inp.addEventListener("change", onChange);
+
+    const txt = document.createElement("div");
+    txt.innerHTML = `<div class="option-label">${label}</div>` +
+      (desc ? `<div class="option-desc">${desc}</div>` : "");
+
+    div.appendChild(inp);
+    div.appendChild(txt);
+    div.addEventListener("click", e => {
+      if (e.target === inp) return;
+      inp.checked = type === "radio" ? true : !inp.checked;
+      inp.dispatchEvent(new Event("change"));
+    });
+    return div;
+  }
+
+  function enforceMax(list, max) {
+    if (!max) return;
+    const checked = list.querySelectorAll('input[type="checkbox"]:checked');
+    if (checked.length > max) checked[checked.length - 1].checked = false;
+    list.querySelectorAll(".option").forEach(div =>
+      div.classList.toggle("selected", div.querySelector("input").checked)
+    );
+  }
+
+  async function callAPI(method, path, body) {
+    try {
+      const opts = { method, headers: { "Content-Type": "application/json" } };
+      if (body) opts.body = JSON.stringify(body);
+      const res  = await fetch(API + path, opts);
+      const data = await res.json();
+      if (!res.ok) return { error: data.detail || "Something went wrong." };
+      return data;
+    } catch (_) {
+      return { error: "Could not reach the server. Is the backend running?" };
+    }
+  }
+</script>
+</body>
+</html>

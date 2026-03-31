@@ -1,0 +1,90 @@
+{
+  "Arts, Culture & Media": [
+    "Performing Arts (Theater & Music)",
+    "Arts Education",
+    "Visual & Community Arts",
+    "Cultural Preservation & Heritage",
+    "Museums & Exhibitions",
+    "Arts & Social Justice"
+  ],
+  "Basic Needs, Human Services & Families": [
+    "Food Security & Hunger Relief",
+    "Housing & Homelessness Services",
+    "Family, Child & Foster Care Services",
+    "Mental Health & Behavioral Health",
+    "Emergency Response & Disaster Relief",
+    "Senior & Disability Services"
+  ],
+  "Economic Empowerment & Community Development & Housing": [
+    "Affordable Housing & Neighborhood Revitalization",
+    "Workforce Development & Job Training",
+    "Small Business & Entrepreneurship",
+    "Community & Economic Development",
+    "Financial Literacy & Economic Mobility",
+    "Labor Rights & Worker Organizations"
+  ],
+  "Education & Skill Development": [
+    "K-12 & General Education",
+    "Early Childhood Education",
+    "Scholarships & Education Funding",
+    "Workforce & Professional Development",
+    "Arts Education",
+    "Community Learning & Youth Development"
+  ],
+  "Environment, Climate & Animals": [
+    "Animal Welfare & Rescue",
+    "Wildlife & Habitat Conservation",
+    "Climate & Clean Energy",
+    "Environmental Justice & Advocacy",
+    "Land, Water & Ocean Conservation",
+    "Sustainable Agriculture & Food Systems"
+  ],
+  "Equity, Justice & Civic Life": [
+    "Racial Justice & Civil Rights",
+    "Gender Justice & Domestic Violence",
+    "Human Trafficking & Exploitation",
+    "LGBTQ+ Rights & Advocacy",
+    "Criminal Justice & Legal Aid",
+    "Civic Engagement & Community Organizing"
+  ],
+  "Faith & Interfaith Initiatives": [
+    "Christian Outreach & Evangelism",
+    "Faith-Based Education & Schools",
+    "Youth Ministry & Spiritual Formation",
+    "Jewish Community & Organizations",
+    "Islamic & Interfaith Initiatives",
+    "Faith-Driven Social Services"
+  ],
+  "International Aid & Global Development": [
+    "Humanitarian Relief & Disaster Response",
+    "Global Health & Medical Missions",
+    "Children, Orphan Care & Family Support",
+    "Clean Water, Food Security & Sustainable Development",
+    "International Education & Poverty Alleviation",
+    "Peacebuilding, Human Rights & Refugees"
+  ],
+  "Medical Research, Health & Wellbeing": [
+    "Mental Health & Counseling",
+    "Substance Abuse & Recovery",
+    "Hospitals & Primary Care",
+    "Senior Care & Long-Term Care",
+    "Disability & Rehabilitation Services",
+    "Community & Public Health"
+  ],
+  "Public Policy, Civic Engagement & Democracy": [
+    "Public Safety & Emergency Services",
+    "Civic Engagement & Voting Rights",
+    "Policy Advocacy & Legislation",
+    "Social Justice & Community Organizing",
+    "Government Accountability & Transparency",
+    "Business & Trade Advocacy"
+  ],
+  "Science, Technology & Innovation for Good": [
+    "STEM Education & Youth Programs",
+    "Medical & Biomedical Research",
+    "Technology Access & Digital Equity",
+    "Robotics, Engineering & Innovation",
+    "Environmental & Conservation Science",
+    "AI, Data & Emerging Technology"
+  ]
+}
