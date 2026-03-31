@@ -85,6 +85,31 @@ VITE_API_URL=https://backend-production-fc024.up.railway.app
 
 Do **not** push directly to `main` — the backend is live and any push triggers a redeploy. Work on a feature branch and open a PR.
 
+## Backend Code Structure
+
+```
+backend/
+├── main.py              # App entry point — wires together all routers, CORS, logging
+├── config.py            # All tuneable values in one place (models, weights, rate limits, etc.)
+├── database.py          # SQLAlchemy engine + session
+├── models.py            # ORM model for the donors table
+├── db_helpers.py        # Shared helpers: get_or_404(), save_profile()
+├── limiter.py           # Rate limiter setup (slowapi)
+├── routes_interview.py  # Interview state machine — all 10 questions, Q4 category loop
+├── routes_tts.py        # ElevenLabs TTS proxy
+├── routes_pps.py        # PPS generation and save via Claude Sonnet
+├── routes_matching.py   # Matching pipeline — not yet implemented
+├── question_bank.json   # All question definitions, options, TTS prompts
+├── taxonomy.json        # Subcategory options per cause category (used for Q4c)
+├── requirements.txt
+└── railway.toml         # Railway deployment config
+```
+
+Key things to know:
+- **`question_bank.json`** — edit this to change question text, options, or TTS prompts. No code changes needed, it hot-reloads on file change.
+- **`config.py`** — change model IDs, rate limits, scoring weights, ElevenLabs settings here. Never hardcoded elsewhere.
+- **`routes_interview.py`** — the full interview flow lives here. The `_next_question()` function is the state machine.
+
 ## Running the Backend Locally
 
 ```bash
